@@ -1,53 +1,53 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:04.476
+00:00:00.000 --> 00:00:04.420
 Levent Alpöge proposed this proof, working with Claude. YiweiIvy built the atlas.
 
 2
-00:00:04.476 --> 00:00:10.242
+00:00:04.420 --> 00:00:10.312
 Each star is a Lean declaration. Press / to search all 804,912 in James Shore’s dependency data.
 
 3
-00:00:10.242 --> 00:00:15.541
+00:00:10.312 --> 00:00:15.445
 Arrows point to declarations a proof uses. Focus the graph and press E to inspect a reference.
 
 4
-00:00:15.541 --> 00:00:21.234
+00:00:15.445 --> 00:00:21.065
 Choose “Trace a proof path” to follow 13 declarations from the Riemann hypothesis to a prime-sum bound.
 
 5
-00:00:21.234 --> 00:00:28.846
+00:00:21.065 --> 00:00:28.683
 Press Play. The numbered stops follow direct references, and the inspector changes with each stop.
 
 6
-00:00:28.846 --> 00:00:33.931
+00:00:28.683 --> 00:00:33.703
 The source link opens the selected declaration at its exact line in the pinned Lean release.
 
 7
-00:00:33.931 --> 00:00:38.739
+00:00:33.703 --> 00:00:38.451
 Corpus groups the same graph by folder or file. Bigger stars contain more declarations.
 
 8
-00:00:38.739 --> 00:00:43.493
+00:00:38.451 --> 00:00:43.145
 Inspect a link for the counts of type and body references crossing between two groups.
 
 9
-00:00:43.493 --> 00:00:47.980
+00:00:43.145 --> 00:00:47.588
 Return to Network and turn on Evidence. The star colors now show review states.
 
 10
-00:00:47.980 --> 00:00:53.562
+00:00:47.588 --> 00:00:53.099
 Move the slider back to the first position. Every star is unreviewed before the first recorded check.
 
 11
-00:00:53.562 --> 00:01:00.341
+00:00:53.099 --> 00:00:59.574
 Play the dated checks. The inspector shows the direct finding separately from the state of its dependencies.
 
 12
-00:01:00.341 --> 00:01:06.402
+00:00:59.574 --> 00:01:06.446
 Choose Contribute verification on the declaration you checked. Include your method and a source.
 
 13
-00:01:06.402 --> 00:01:10.000
+00:01:06.446 --> 00:01:10.000
 Explore the graph at yiweiivy.github.io/riemann-hypothesis-atlas/
