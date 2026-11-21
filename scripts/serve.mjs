@@ -15,6 +15,9 @@ const contentTypes = {
   ".svg": "image/svg+xml",
   ".woff": "font/woff",
   ".woff2": "font/woff2",
+  ".mp4": "video/mp4",
+  ".vtt": "text/vtt; charset=utf-8",
+  ".jpg": "image/jpeg",
   ".gz": "application/gzip",
 };
 const port = Number(process.env.PORT ?? 8765);
@@ -30,7 +33,10 @@ const server = http.createServer(async (req, res) => {
     const candidate =
       pathname === "/offline.html"
         ? portable
-        : resolve(root, "." + (pathname === "/" ? "/index.html" : pathname));
+        : resolve(
+            root,
+            "." + (pathname.endsWith("/") ? pathname + "index.html" : pathname),
+          );
     if (candidate !== portable && !candidate.startsWith(resolve(root) + sep)) {
       res.writeHead(403).end();
       return;

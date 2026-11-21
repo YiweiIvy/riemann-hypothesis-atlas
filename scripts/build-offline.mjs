@@ -63,7 +63,11 @@ async function packStyle(file) {
   return css;
 }
 const inlined = new Map();
-let html = await read("index.html");
+// The portable graph is self-contained. Its optional film opens the hosted player.
+let html = (await read("index.html")).replace(
+  'href="./tour/"',
+  'href="https://yiweiivy.github.io/critical-atlas/tour/"',
+);
 const styles = [
   ...html.matchAll(
     /<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*>/gi,

@@ -1,6 +1,6 @@
-import { icon } from "./ui.mjs";
+import { esc, icon } from "./ui.mjs";
 
-export function guideHTML() {
+export function guideHTML(tourUrl) {
   const views = [
     [
       "network",
@@ -24,5 +24,6 @@ export function guideHTML() {
     ],
   ];
   return `<div class="key-guide">${views.map(([symbol, title, hint]) => `<div>${icon(symbol)}<b>${title}</b><span>${hint}</span></div>`).join("")}</div>
-    <div class="shortcuts"><span><kbd>/</kbd> Find</span><span><kbd>+</kbd> <kbd>−</kbd> Zoom</span><span><kbd>E</kbd> Inspect a link</span><span><kbd>[</kbd> <kbd>]</kbd> Step through a path</span><span>Alt-hover to inspect dense links</span></div>`;
+    <div class="shortcuts"><span><kbd>/</kbd> Find</span><span><kbd>+</kbd> <kbd>−</kbd> Zoom</span><span><kbd>E</kbd> Inspect a link</span><span><kbd>[</kbd> <kbd>]</kbd> Step through a path</span><span>Alt-hover to inspect dense links</span></div>
+    <p class="guide-film"><a href="${esc(tourUrl)}">Watch the captioned walkthrough ↗</a></p>`;
 }

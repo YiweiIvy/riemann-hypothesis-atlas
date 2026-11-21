@@ -2,7 +2,7 @@
 
 An interactive explorer for Levent Alpöge’s Riemann hypothesis proof claim. The graph indexes 804,912 Lean declarations and 7,917,157 direct reference pairs used by the five published targets. Every declaration links to its pinned source.
 
-[Explore the live atlas](https://yiweiivy.github.io/critical-atlas/)
+[Explore the live atlas](https://yiweiivy.github.io/critical-atlas/) · [Watch the captioned walkthrough](https://yiweiivy.github.io/critical-atlas/tour/) · [Download the MP4](https://yiweiivy.github.io/critical-atlas/tour/galaxy-walkthrough.mp4)
 
 ![The dependency galaxy, with source families in seven colors and the Riemann hypothesis selected](docs/preview.png)
 

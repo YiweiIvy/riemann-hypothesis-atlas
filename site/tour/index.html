@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#090c16" />
+    <title>A tour of the proof galaxy · Critical Atlas</title>
+    <meta
+      name="description"
+      content="Watch the real explorer trace a path through the Lean proof and replay its evidence."
+    />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:title" content="A tour of the proof galaxy" />
+    <meta
+      property="og:description"
+      content="An English-captioned walkthrough of the Critical Atlas graph."
+    />
+    <meta
+      property="og:image"
+      content="https://yiweiivy.github.io/critical-atlas/tour/galaxy-poster.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="tour.css" />
+  </head>
+  <body>
+    <a class="skip" href="#film">Skip to film</a>
+    <header class="mast">
+      <div class="topframe tour-top">
+        <a href="../" class="brand"
+          ><img src="../mark.svg" alt="" /><strong>Critical Atlas</strong></a
+        >
+        <a class="to-explorer" href="../"
+          >Open explorer <span aria-hidden="true">↗</span></a
+        >
+      </div>
+    </header>
+    <main class="film" id="film">
+      <h1>A tour of the proof galaxy</h1>
+      <video
+        id="walkthrough"
+        controls
+        playsinline
+        preload="metadata"
+        poster="galaxy-poster.jpg"
+        aria-label="A tour of the proof galaxy, with English captions"
+      >
+        <source src="galaxy-walkthrough.mp4" type="video/mp4" />
+        <track
+          src="galaxy-walkthrough.vtt"
+          kind="captions"
+          srclang="en"
+          label="English"
+        />
+        <a href="galaxy-walkthrough.mp4">Download the video</a>
+      </video>
+      <div class="film-links">
+        <span>English captions</span>
+        <a href="galaxy-walkthrough.mp4" download
+          >Download MP4 <span aria-hidden="true">↓</span></a
+        >
+      </div>
+      <details class="transcript">
+        <summary>Transcript</summary>
+        <ol id="cues"></ol>
+        <a href="galaxy-walkthrough.vtt" download>Download captions</a>
+      </details>
+    </main>
+    <script type="module" src="tour.mjs"></script>
+  </body>
+</html>

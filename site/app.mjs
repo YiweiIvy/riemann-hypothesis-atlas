@@ -313,7 +313,10 @@ async function main() {
         dialog.close();
         break;
       case "guide":
-        promptBox("Explorer controls", guideHTML());
+        promptBox(
+          "Explorer controls",
+          guideHTML(document.querySelector(".tour-link").href),
+        );
         break;
       case "contribute": {
         const repo = document.querySelector(

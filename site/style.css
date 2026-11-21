@@ -1566,3 +1566,12 @@ dialog::backdrop {
     padding-inline: 5px;
   }
 }
+
+.foot .tour-link {
+  color: #c2b7eb;
+  text-underline-offset: 3px;
+}
+.guide-film {
+  margin-top: 16px;
+  font-size: 14px;
+}
