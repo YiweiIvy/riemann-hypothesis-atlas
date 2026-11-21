@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#090c16" />
+    <meta name="atlas-repository" content="" />
+    <meta
+      name="description"
+      content="Explore the Lean dependencies and verification records of Alpöge’s Riemann hypothesis claim."
+    />
+    <title>Critical Atlas — Riemann hypothesis</title>
+    <link rel="icon" href="mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="galaxy.css" />
+    <link rel="stylesheet" href="code-view.css" />
+    <link rel="stylesheet" href="ledger.css" />
+  </head>
+  <body>
+    <a class="skip" href="#work">Skip to workspace</a>
+    <header class="mast">
+      <div class="topframe">
+        <a href="#map" class="brand"
+          ><img src="mark.svg" alt="" /><strong>Critical Atlas</strong></a
+        >
+        <nav aria-label="Workspace">
+          <a href="#map" data-page="map">Explorer</a
+          ><a href="#code" data-page="code">Source index</a
+          ><a href="#ledger" data-page="ledger">Evidence</a
+          ><a href="#sources" data-page="sources">Sources</a>
+        </nav>
+        <button class="source-stamp" data-action="sources">
+          <span></span>Pinned snapshot
+        </button>
+        <button
+          class="nav-help icon-button"
+          data-action="guide"
+          title="Controls and reading guide"
+          aria-label="Controls and reading guide"
+        >
+          ?
+        </button>
+      </div>
+    </header>
+    <main id="work" tabindex="-1" class="frame">
+      <div id="workspace" aria-busy="true">
+        <div class="loading">Loading proof graph…</div>
+      </div>
+      <noscript
+        >This atlas requires JavaScript. Read the
+        <a href="https://alpo.ge/remark.pdf">original announcement</a> or the
+        <a href="https://math.mit.edu/~drew/grh/">independent check logs</a
+        >.</noscript
+      >
+    </main>
+    <footer class="frame foot">
+      <span
+        >Critical Atlas <span class="foot-slash">/</span> Alpöge archive</span
+      ><button data-action="contribute">Contribute a review ↗</button
+      ><span class="foot-date">Snapshot · 21 Nov 2026</span>
+    </footer>
+    <dialog id="dialog"><div id="dialog-body"></div></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="app.mjs"></script>
+  </body>
+</html>
