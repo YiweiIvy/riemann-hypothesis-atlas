@@ -1,0 +1,45 @@
+.share-detail {
+  margin-block: 4px 15px;
+  color: #c3cce3;
+  overflow-wrap: anywhere;
+}
+.share-field {
+  display: flex;
+  gap: 7px;
+}
+.share-field input {
+  flex: 1;
+  min-width: 0;
+  background: #101523;
+  border: 1px solid #505b77;
+  color: #e0e5f9;
+  padding: 9px;
+  border-radius: 5px;
+  font-size: 13px;
+}
+.share-field button {
+  flex: none;
+}
+.share-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 18px;
+  border-top: 1px solid #343b51;
+  padding-top: 12px;
+}
+.share-more a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #d6cdff;
+  font-size: 13px;
+}
+.share-more svg {
+  width: 14px;
+  height: 14px;
+}
+.share-feedback {
+  min-height: 22px;
+  font-size: 12px;
+  color: #9ee1d9;
+}

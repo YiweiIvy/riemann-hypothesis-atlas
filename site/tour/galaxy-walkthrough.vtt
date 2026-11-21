@@ -1,53 +1,53 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:05.231
+00:00:00.000 --> 00:00:05.378
 Each star is a Lean declaration, such as a definition or theorem. Color shows its mathematical family.
 
 2
-00:00:05.231 --> 00:00:11.176
+00:00:05.378 --> 00:00:10.757
 The opening view shows 639 stars. Press / to search all 804,912 declarations.
 
 3
-00:00:11.176 --> 00:00:16.093
+00:00:10.757 --> 00:00:15.715
 Arrows point to declarations a proof uses. Focus the graph and press E to inspect a reference.
 
 4
-00:00:16.093 --> 00:00:21.377
+00:00:15.715 --> 00:00:21.147
 Choose “Trace a proof path” to follow 13 declarations from the Riemann hypothesis to a prime-sum bound.
 
 5
-00:00:21.377 --> 00:00:29.694
+00:00:21.147 --> 00:00:28.518
 Press Play. The numbered stops follow direct references, and the inspector changes with each stop.
 
 6
-00:00:29.694 --> 00:00:34.412
+00:00:28.518 --> 00:00:33.370
 The source link opens the selected declaration at its exact line in the pinned Lean release.
 
 7
-00:00:34.412 --> 00:00:38.875
+00:00:33.370 --> 00:00:37.956
 Corpus groups the same graph by folder or file. Bigger stars contain more declarations.
 
 8
-00:00:38.875 --> 00:00:43.286
+00:00:37.956 --> 00:00:42.491
 Inspect a link for the counts of type and body references crossing between two groups.
 
 9
-00:00:43.286 --> 00:00:47.404
+00:00:42.491 --> 00:00:48.068
 Return to Network and turn on Evidence. The star colors now show review states.
 
 10
-00:00:47.404 --> 00:00:52.584
+00:00:48.068 --> 00:00:53.395
 Move the slider back to the first position. Every star is unreviewed before the first recorded check.
 
 11
-00:00:52.584 --> 00:01:00.003
+00:00:53.395 --> 00:01:00.442
 Play the dated checks. The inspector shows the direct finding separately from the state of its dependencies.
 
 12
-00:01:00.003 --> 00:01:06.169
+00:01:00.442 --> 00:01:06.557
 Select any declaration to inspect its own checks or add a sourced review.
 
 13
-00:01:06.169 --> 00:01:09.500
-Explore the graph at yiweiivy.github.io/critical-atlas/
+00:01:06.557 --> 00:01:10.000
+Explore the graph at yiweiivy.github.io/riemann-hypothesis-atlas/

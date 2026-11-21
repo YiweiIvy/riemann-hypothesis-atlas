@@ -1,7 +1,14 @@
 // The portable atlas embeds the same compressed shards as the hosted application.
 // Write the corpus sequentially, keeping peak build memory independent of its size.
 import { createWriteStream } from "node:fs";
-import { mkdir, readFile, readdir, rename, rm } from "node:fs/promises";
+import {
+  copyFile,
+  mkdir,
+  readFile,
+  readdir,
+  rename,
+  rm,
+} from "node:fs/promises";
 import { once } from "node:events";
 import { finished } from "node:stream/promises";
 import { dirname, extname, posix, resolve } from "node:path";
@@ -10,7 +17,9 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const site = resolve(root, "site");
 const outDir = resolve(root, "dist");
-const out = resolve(outDir, "critical-atlas.html");
+const out = resolve(outDir, "riemann-hypothesis-atlas.html");
+// Earlier local releases linked directly to this filename in dist/.
+const legacy = resolve(outDir, "critical-atlas.html");
 const read = (path, encoding = "utf8") =>
   readFile(resolve(site, path), encoding);
 const modules = {};
@@ -66,7 +75,7 @@ const inlined = new Map();
 // The portable graph is self-contained. Its optional film opens the hosted player.
 let html = (await read("index.html")).replace(
   'href="./tour/"',
-  'href="https://yiweiivy.github.io/critical-atlas/tour/"',
+  'href="https://yiweiivy.github.io/riemann-hypothesis-atlas/tour/"',
 );
 const styles = [
   ...html.matchAll(
@@ -159,6 +168,13 @@ try {
   stream.end();
   await end;
   await rename(temp, out);
+  const aliasTemp = legacy + "." + process.pid + ".building";
+  try {
+    await copyFile(out, aliasTemp);
+    await rename(aliasTemp, legacy);
+  } finally {
+    await rm(aliasTemp, { force: true });
+  }
 } catch (error) {
   stream.destroy();
   await end.catch(() => {});

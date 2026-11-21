@@ -1,8 +1,8 @@
 {
-  "name": "critical-atlas",
+  "name": "riemann-hypothesis-atlas",
   "version": "2.0.0",
   "private": true,
-  "description": "Interactive atlas of the announced Riemann hypothesis proof and its verification record",
+  "description": "Explore the Lean dependency graph of Alpöge’s Riemann hypothesis proof claim and replay its published verification records.",
   "license": "MIT",
   "type": "module",
   "scripts": {

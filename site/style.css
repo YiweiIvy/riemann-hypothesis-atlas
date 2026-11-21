@@ -1575,3 +1575,27 @@ dialog::backdrop {
   margin-top: 16px;
   font-size: 14px;
 }
+
+/* Keep the full wordmark on one row on narrow screens. */
+@media (max-width: 860px) and (min-width: 741px) {
+  .topframe {
+    gap: 16px;
+  }
+  .mast nav {
+    margin-left: 0;
+  }
+  .mast .source-stamp {
+    display: none;
+  }
+  .mast .nav-help {
+    margin-left: auto;
+  }
+}
+@media (max-width: 389px) {
+  .mast .source-stamp {
+    display: none;
+  }
+  .mast .source-stamp + .nav-help {
+    margin-left: auto;
+  }
+}

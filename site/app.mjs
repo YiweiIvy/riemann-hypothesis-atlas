@@ -13,12 +13,14 @@ import {
 import { renderCode, bindCode } from "./code-view.mjs";
 import { renderLedger, bindLedger } from "./ledger.mjs";
 import { renderSources } from "./sources-view.mjs";
+import { showShare } from "./atlas-share.mjs";
 import { mountExplorer } from "./explorer.mjs";
 import { guideHTML } from "./guide.mjs";
 import { esc, external } from "./ui.mjs";
 
 const workspace = document.querySelector("#workspace"),
   dialog = document.querySelector("#dialog"),
+  // Keep saved reviews readable across the project rename.
   key = "critical-atlas.v1." + REVIEW_CONTEXT;
 const pages = new Set(["map", "code", "ledger", "sources"]);
 async function load(name) {
@@ -109,7 +111,10 @@ async function main() {
     storageError = true;
   }
   function setHash(next, id = "", replace = false) {
-    const hash = "#" + next + (id ? "/" + encodeURIComponent(id) : "");
+    const hash =
+      "#" +
+      next +
+      (id ? "/" + id.split("/").map(encodeURIComponent).join("/") : "");
     if (location.hash !== hash)
       history[replace ? "replaceState" : "pushState"](null, "", hash);
   }
@@ -166,6 +171,8 @@ async function main() {
       onReview,
       onLedger,
       notify,
+      onShare: (destination, detail) =>
+        showShare(destination, detail, promptBox),
       onRoute: (id) => setHash("map", id, true),
       onOutline: (n) =>
         promptBox(
@@ -337,7 +344,10 @@ async function main() {
       case "archive-report":
         return download("archive-check.json", JSON.stringify(report, null, 2));
       case "export":
-        download("critical-atlas-reviews.json", exportReviews(personal));
+        download(
+          "riemann-hypothesis-atlas-reviews.json",
+          exportReviews(personal),
+        );
         notify("Exported " + personal.length + " personal reviews.");
         break;
       case "import": {

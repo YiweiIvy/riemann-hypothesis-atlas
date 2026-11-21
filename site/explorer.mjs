@@ -12,6 +12,7 @@ import {
 import { NODES, READING_ORDER, AUTHOR_ROUTE } from "./data/atlas.mjs";
 import { esc, icon, count, shortName, states, external } from "./ui.mjs";
 import { mountEvidencePlayback } from "./evidence-playback.mjs";
+import { shareDestination } from "./atlas-share.mjs";
 import { criticalLine } from "./critical-line.mjs";
 
 const palettes = [
@@ -113,7 +114,7 @@ function shell(meta) {
         </div>
         <div class="plot-frame">
           <div class="plot-info"><h2 id="plot-title">Dependency network</h2><div class="plot-readout"><i></i><span id="plot-count"></span></div></div>
-          <div class="plot-tools">${tool("fullscreen", "Expand workspace", "open")}${tool("options", "Graph settings", "filter", 'aria-expanded="false"')}</div>
+          <div class="plot-tools">${tool("share", "Share a public link", "share")}${tool("fullscreen", "Expand workspace", "open")}${tool("options", "Graph settings", "filter", 'aria-expanded="false"')}</div>
           <div id="galaxy-host"></div><div id="plot-flyout"></div><div id="plot-context"></div>
           <div class="zoom-dock">${tool("minus", "Zoom out", "minus")}<output id="zoom-value">100%</output>${tool("plus", "Zoom in", "plus")}<b></b>${tool("fit", "Fit graph", "fit")}</div>
           <div class="plot-help"><span class="mouse-mark"></span><span class="desktop-hint">Drag to pan · Scroll to zoom</span><span class="mobile-hint">Drag · Pinch · Double tap</span></div>
@@ -157,6 +158,7 @@ export function mountExplorer(container, options) {
     excluded = new Set(),
     edgeFilter = null;
   let routeIds = [],
+    trailOrigin = null,
     pathTimer = null,
     playback = null,
     frameModel = null;
@@ -289,11 +291,17 @@ export function mountExplorer(container, options) {
       pathTimer = null;
     }
   }
+  function selectionRoute() {
+    if (lens === "route") return "step:" + selected;
+    if (subview === "path")
+      return "trail/" + (routeIds.indexOf(selected) + 1) + "/" + trailOrigin;
+    return selected;
+  }
   function stepTrail(pos) {
     if (!routeIds[pos]) return;
     choose(routeIds[pos], false);
     g.select(selected);
-    onRoute(selected);
+    onRoute(selectionRoute());
   }
   function playTrail() {
     if (pathTimer !== null) {
@@ -477,7 +485,7 @@ export function mountExplorer(container, options) {
       stopTrail();
       operation++;
       g.select(id);
-      onRoute(lens === "route" ? "step:" + id : isGroup(picked) ? id : id);
+      onRoute(selectionRoute());
     }
     drawInspector();
     renderContext();
@@ -754,7 +762,7 @@ export function mountExplorer(container, options) {
           : "")
       : "No " + edgeLabel + " between the displayed nodes";
     el("relation-key").innerHTML = icon("link") + summary;
-    onRoute(dir);
+    onRoute(offset ? "folder/" + offset + "/" + dir : dir);
   }
   async function expand(id = selected, replace = false) {
     const seq = ++operation;
@@ -811,9 +819,8 @@ export function mountExplorer(container, options) {
           : "All direct references are already visible.",
       );
   }
-  async function tracePath() {
-    const seq = ++operation,
-      id = selected;
+  async function tracePath(id = selected, indexInPath = null) {
+    const seq = ++operation;
     let chain;
     if (index.roots.includes(id)) {
       // These are source-anchored mathematical landmarks in the starting graph.
@@ -851,16 +858,31 @@ export function mountExplorer(container, options) {
         sequenceIndex,
       })),
       edges = chain.edges;
+    trailOrigin = id;
     routeIds = nodes.map((n) => n.id);
     lens = "network";
     subview = "path";
     expanded.clear();
     onRecords(nodes, edges);
-    bindData({ nodes, edges }, id);
-    onRoute(id);
+    const hop =
+      indexInPath === null
+        ? id
+        : routeIds[Math.max(0, Math.min(routeIds.length - 1, indexInPath))];
+    bindData({ nodes, edges }, hop);
+    onRoute(selectionRoute());
   }
   async function locate(input, { focus = true } = {}) {
     let id = namespaced(input || "riemannHypothesis");
+    const trail = /^trail\/([1-9]\d*)\/(.+)$/.exec(id);
+    if (trail) {
+      await tracePath(trail[2], Number(trail[1]) - 1);
+      return;
+    }
+    const folder = /^folder\/(\d+)\/(src(?:\/.+)?)$/.exec(id);
+    if (folder && Number.isSafeInteger(Number(folder[1]))) {
+      await directory(folder[2], Number(folder[1]));
+      return;
+    }
     if (id.startsWith("src/") || id === "src") {
       await directory(id);
       return;
@@ -1061,6 +1083,26 @@ export function mountExplorer(container, options) {
       (settings || searchOpen)
     )
       closePopover();
+    if (a === "share") {
+      stopTrail();
+      renderContext();
+      const destination = shareDestination({
+        lens,
+        subview,
+        selected,
+        origin: trailOrigin,
+        position: routeIds.indexOf(selected),
+        directory: path,
+        offset: corpusPage.offset,
+      });
+      const detail =
+        lens === "corpus"
+          ? path
+          : subview === "path"
+            ? `Step ${routeIds.indexOf(selected) + 1} of ${routeIds.length} · ${picked.label}`
+            : picked?.label;
+      options.onShare(destination, detail);
+    }
     if (a === "lens") await switchLens(id);
     if (a === "reset") await switchLens("network");
     if (a === "directory") await directory(id);

@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { resolve, extname, sep } from "node:path";
 const root = fileURLToPath(new URL("../site/", import.meta.url));
 const portable = fileURLToPath(
-  new URL("../dist/critical-atlas.html", import.meta.url),
+  new URL("../dist/riemann-hypothesis-atlas.html", import.meta.url),
 );
 const contentTypes = {
   ".html": "text/html; charset=utf-8",

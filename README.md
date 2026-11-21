@@ -1,8 +1,10 @@
-# Critical Atlas
+# Riemann Hypothesis Atlas
 
-An interactive explorer for Levent Alpöge’s Riemann hypothesis proof claim. The graph indexes 804,912 Lean declarations and 7,917,157 direct reference pairs used by the five published targets. Every declaration links to its pinned source.
+**[Open the interactive atlas](https://yiweiivy.github.io/riemann-hypothesis-atlas/)** · [Follow the 13-node path](https://yiweiivy.github.io/riemann-hypothesis-atlas/#map/trail/1/riemannHypothesis) · [Watch the 70-second tour](https://yiweiivy.github.io/riemann-hypothesis-atlas/tour/)
 
-[Explore the live atlas](https://yiweiivy.github.io/critical-atlas/) · [Watch the captioned walkthrough](https://yiweiivy.github.io/critical-atlas/tour/) · [Download the MP4](https://yiweiivy.github.io/critical-atlas/tour/galaxy-walkthrough.mp4)
+Explore the Lean code behind Levent Alpöge’s Riemann hypothesis proof claim. Each star is a declaration. Follow its references to a source line, play a path from RH to a prime-sum bound, or scrub through the published checks.
+
+The full graph covers **804,912 declarations** and **7,917,157 direct reference pairs** across five published targets.
 
 ![The dependency galaxy, with source families in seven colors and the Riemann hypothesis selected](docs/preview.png)
 
@@ -13,6 +15,8 @@ An interactive explorer for Levent Alpöge’s Riemann hypothesis proof claim. T
 - **Corpus** opens the five targets’ combined dependency graph by source directory and file. Node size reflects declaration count. The connecting arcs summarize cross-group references.
 - **Proof route** follows twelve annotated mathematical steps for readers new to the argument. Every step links into the Lean network.
 - **Evidence** on the graph replays dated checks. Record a finding on any declaration, inspect its dependency chain, or exchange a snapshot-bound review file. The review model counts distinct evidence groups and preserves challenges, corrections and unresolved dependencies. [Review model and contributions](CONTRIBUTING.md)
+
+[Download the walkthrough](https://yiweiivy.github.io/riemann-hypothesis-atlas/tour/galaxy-walkthrough.mp4) · [Get the 16-second teaser](https://yiweiivy.github.io/riemann-hypothesis-atlas/share/galaxy-teaser.mp4) · [Share card and launch copy](docs/launch.md)
 
 ## The source
 
@@ -37,7 +41,7 @@ npm test
 npm run build
 ```
 
-Open `dist/critical-atlas.html` in a modern browser. Source and log links lead to the external originals. Personal reviews stay in the current browser until exported. To reproduce the source comparison, save the fourteen original parts as `part01` through `part14`, download the pinned mirror archive and run the verifier. [Pinned mirror tarball](https://codeload.github.com/CocoSgt/riemann-hypothesis-lean/tar.gz/0fb9869c6e6d7b54b67de803af0e0be29d37fc22)
+Open `dist/riemann-hypothesis-atlas.html` in a modern browser. Source and log links lead to the external originals. Personal reviews stay in the current browser until exported. To reproduce the source comparison, save the fourteen original parts as `part01` through `part14`, download the pinned mirror archive and run the verifier. [Pinned mirror tarball](https://codeload.github.com/CocoSgt/riemann-hypothesis-lean/tar.gz/0fb9869c6e6d7b54b67de803af0e0be29d37fc22)
 
 ```sh
 python3 scripts/verify-archives.py /path/to/parts /path/to/cocosgt.tar.gz

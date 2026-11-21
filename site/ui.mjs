@@ -7,6 +7,9 @@ export const esc = (value) =>
       ],
   );
 const paths = {
+  share:
+    '<circle cx="18" cy="5" r="3"/><circle cx="5" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8 11 7-4M8 13l7 4"/>',
+  star: '<path d="m12 2.5 2.9 6 6.6.9-4.8 4.7 1.1 6.6-5.8-3.1-5.8 3.1 1.1-6.6L2.5 9.4l6.6-.9z"/>',
   play: '<path d="m7 4 12 8-12 8z"/>',
   pause: '<path d="M8 5v14m8-14v14"/>',
   network:

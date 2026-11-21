@@ -8,7 +8,9 @@ const { chromium } = await import(
 );
 const pageFile =
   process.argv[2] ||
-  fileURLToPath(new URL("../dist/critical-atlas.html", import.meta.url));
+  fileURLToPath(
+    new URL("../dist/riemann-hypothesis-atlas.html", import.meta.url),
+  );
 const uri = pathToFileURL(resolve(pageFile)).href;
 const outsideFocus = "Formalism.UG.P.conv_finDosetSupp";
 const browser = await chromium.launch({

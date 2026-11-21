@@ -86,3 +86,16 @@
     margin-bottom: 14px;
   }
 }
+
+@media (max-width: 370px) {
+  .tour-top .brand {
+    font-size: 16px;
+  }
+  .tour-top .brand img {
+    width: 25px;
+    height: 25px;
+  }
+  .tour-top .to-explorer {
+    font-size: 12px;
+  }
+}

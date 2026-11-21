@@ -23,13 +23,18 @@ jobs:
         run: |
           mkdir _pages
           cp -R site/. _pages/
-          cp dist/critical-atlas.html _pages/offline.html
+          cp dist/riemann-hypothesis-atlas.html _pages/offline.html
           python3 - <<'PYTHON'
           import os
           from pathlib import Path
-          for path in (Path('_pages/index.html'), Path('_pages/offline.html')):
+          repository = os.environ['GITHUB_REPOSITORY']
+          owner, name = repository.split('/')
+          hostname = owner.lower() + '.github.io'
+          pages_url = 'https://' + hostname + '/' + ('' if name.lower() == hostname else name + '/')
+          for path in (Path('_pages/index.html'), Path('_pages/tour/index.html'), Path('_pages/offline.html')):
               html = path.read_text()
-              html = html.replace('name="atlas-repository" content=""', 'name="atlas-repository" content="https://github.com/' + os.environ['GITHUB_REPOSITORY'] + '"')
+              html = html.replace('https://yiweiivy.github.io/riemann-hypothesis-atlas/', pages_url)
+              html = html.replace('https://github.com/YiweiIvy/riemann-hypothesis-atlas', 'https://github.com/' + repository)
               path.write_text(html)
           PYTHON
       - uses: actions/upload-pages-artifact@v4
