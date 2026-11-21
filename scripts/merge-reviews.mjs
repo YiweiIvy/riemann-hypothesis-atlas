@@ -10,6 +10,7 @@ import {
   REVIEW_CONTEXT,
 } from "../site/trust.mjs";
 import { BASELINE } from "../site/data/baseline.mjs";
+import { publicRegistry, validateSubmission } from "./public-registry.mjs";
 import { openLocalCosmos } from "./open-local-cosmos.mjs";
 
 // Serialize concurrent local writes. A rejected input leaves the entire registry untouched.
@@ -22,18 +23,40 @@ export async function mergeIntoRegistry(
 ) {
   if (!inputs.length)
     throw new Error("Provide at least one exported review file");
+  const additions = [];
+  for (const input of inputs) {
+    additions.push(importReviews(await readFile(input, "utf8"), context));
+  }
+  return mergeRegistryRecords(registry, additions.flat(), {
+    allowedIds,
+    context,
+    protectedReviews,
+  });
+}
+
+export async function mergeRegistryRecords(
+  registry,
+  records,
+  {
+    allowedIds,
+    context = REVIEW_CONTEXT,
+    protectedReviews = BASELINE,
+    submission,
+  } = {},
+) {
+  if (submission) validateSubmission(submission);
   const lockName = registry + ".lock";
   const lock = await open(lockName, "wx");
   const temporary = registry + "." + randomUUID() + ".tmp";
   try {
     const original = await readFile(registry, "utf8");
-    const baseline = importReviews(original, context);
-    const additions = [];
-    for (const input of inputs) {
-      additions.push(importReviews(await readFile(input, "utf8"), context));
-    }
+    const { reviews: baseline, submissions } = publicRegistry(
+      original,
+      context,
+      protectedReviews,
+    );
     const requested = new Set(
-      [...baseline, ...additions.flat()].map((review) => review.nodeId),
+      [...baseline, ...records].map((review) => review.nodeId),
     );
     const allowed =
       allowedIds === undefined
@@ -44,10 +67,20 @@ export async function mergeIntoRegistry(
     }
     const protectedIds = new Set(protectedReviews.map((review) => review.id));
     const merged = enforceReviewOwnership(
-      mergeReviews(...additions),
+      mergeReviews(records),
       mergeReviews(protectedReviews, baseline),
     ).filter((review) => !protectedIds.has(review.id));
-    const json = exportReviews(merged, context);
+    const beforeIds = new Set(baseline.map((r) => r.id));
+    if (submission) {
+      for (const r of merged)
+        if (!beforeIds.has(r.id)) submissions.set(r.id, submission);
+    }
+    let json = exportReviews(merged, context);
+    if (submissions.size) {
+      const envelope = JSON.parse(json);
+      envelope.submissions = Object.fromEntries(submissions);
+      json = JSON.stringify(envelope, null, 2) + "\n";
+    }
     if (original !== json) {
       await writeFile(temporary, json, { flag: "wx" });
       await rename(temporary, registry);

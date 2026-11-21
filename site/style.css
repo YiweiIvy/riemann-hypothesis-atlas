@@ -1599,3 +1599,16 @@ dialog::backdrop {
     margin-left: auto;
   }
 }
+
+.proof-byline { margin: 6px 0 0; font-size: 13px; line-height: 1.4; color: #b4bed4; }
+.proof-byline a, .below-stage a, .foot .credit-link { color: inherit; text-underline-offset: 3px; }
+@media (max-width: 620px) { .proof-byline { margin-top: 3px; font-size: 11px; } }
+.verification-node { font: 12px/1.45 var(--mono); color: #c9c2e6; overflow-wrap: anywhere; margin-bottom: 6px; }
+.verification-actions { flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.verification-links { display: flex; flex-wrap: wrap; gap: 5px 14px; margin-top: 14px; }
+.verification-preview { padding: 10px 12px; margin: 12px 0; border: 1px solid #39405b; border-radius: 6px; background: #101725; }
+.verification-preview p { white-space: pre-wrap; overflow-wrap: anywhere; margin: 5px 0; }
+.verification-preview strong, .verification-preview small { overflow-wrap: anywhere; }
+#submission-details { margin-block: 12px; }
+#submission-body { width: 100%; min-height: 160px; padding: 7px; color: inherit; background: #101725; border: 1px solid #49516a; font: 11px var(--mono); }
+#submission-status { color: #9ae0d8; font-size: 12px; }

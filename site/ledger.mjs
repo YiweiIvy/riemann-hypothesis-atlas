@@ -162,24 +162,27 @@ function trend(history) {
   </div>`;
 }
 
-function recordList(records, localIds, communityIds, baselineIds, nodeById) {
+function recordList(records, localIds, communityIds, baselineIds, nodeById, submissions, archived = false) {
   if (!records.length) return '<p class="ld-muted ld-log-empty">No direct reviews.</p>';
   const successors = new Map(records.filter(r => r.supersedes).map(r => [r.supersedes, r]));
   const byId = new Map(records.map(r => [r.id, r]));
   const row = review => {
-    const origin = baselineIds.has(review.id) ? 'Published check' : communityIds.has(review.id) ? 'Community' : localIds.has(review.id) ? 'Personal' : 'Review';
+    const origin = archived ? 'Private archive' : baselineIds.has(review.id) ? 'Published check' : communityIds.has(review.id) ? 'Community' : localIds.has(review.id) ? 'Personal' : 'Review';
     const successor = successors.get(review.id);
-    const amendable = !successor && localIds.has(review.id) && !baselineIds.has(review.id) && !communityIds.has(review.id);
+    const amendable = !archived && !successor && localIds.has(review.id) && !baselineIds.has(review.id) && !communityIds.has(review.id);
     const prior = byId.get(review.supersedes);
+    const submission = !archived && communityIds.has(review.id) && Object.hasOwn(submissions, review.id)
+      ? submissions[review.id] : null;
+    const contributor = submission?.issue ? reference(submission.issue, submission.login ? 'Submitted by @' + submission.login : 'Submission issue') : '';
     const lineage = [
       prior ? `Amends ${verdicts[prior.outcome]} from ${stamp(prior.at)} UTC` : '',
       successor ? `${successor.outcome === 'withdrawn' ? 'Withdrawn' : 'Amended'} · ${stamp(successor.at)} UTC` : '',
     ].filter(Boolean).join(' ');
-    return `<li class="ld-logrow"><div class="ld-record-meta"><time datetime="${html(review.at)}">${html(stamp(review.at))} UTC</time><span>${origin}</span></div>
+    return `<li class="ld-logrow"><div class="ld-record-meta"><time datetime="${html(review.at)}">${html(stamp(review.at))} UTC</time><span>${origin}</span>${contributor}</div>
       <div><strong class="ld-outcome" data-outcome="${html(review.outcome)}">${html(verdicts[review.outcome])}</strong><span class="ld-record-node">${html(name(nodeById.get(review.nodeId)))}</span>
       ${lineage ? '<div class="ld-lineage">' + html(lineage) + '</div>' : ''}
       <p>${html(review.note)}</p><small>Evidence group · ${html(review.group)}</small><div class="ld-ref">Source · ${reference(review.source)}</div>
-      ${amendable ? `<button type="button" class="ld-amend" data-action="amend" data-id="${html(review.id)}">Amend review</button>` : ''}</div></li>`;
+      ${amendable ? `<button type="button" class="ld-amend" data-action="amend" data-id="${html(review.id)}">Amend review</button> <button type="button" class="ld-amend" data-action="submit-review" data-id="${html(review.id)}">Submit verification</button>` : ''}</div></li>`;
   };
   const ordered = [...records].sort((a, b) => b.at.localeCompare(a.at) || b.id.localeCompare(a.id));
   return `<ol class="ld-log">${ordered.slice(0, 8).map(row).join('')}</ol>${ordered.length > 8 ? `<details class="ld-more"><summary>${ordered.length - 8} earlier records</summary><ol class="ld-log">${ordered.slice(8).map(row).join('')}</ol></details>` : ''}`;
@@ -192,7 +195,7 @@ function jumps(ids, byId, result) {
   }).join('');
 }
 
-export function renderLedger({nodes, reviews = [], localReviews = [], communityReviews = [], baseline = [], selectedId}) {
+export function renderLedger({nodes, reviews = [], localReviews = [], archivedReviews = [], communityReviews = [], baseline = [], submissions = {}, issuesUrl, selectedId}) {
   const byId = new Map(nodes.map(n => [n.id, n]));
   const current = byId.get(selectedId) || nodes[0];
   if (!current) return '<section class="ld-page"><h2>Evidence ledger</h2><p>No reviewable nodes.</p></section>';
@@ -210,8 +213,10 @@ export function renderLedger({nodes, reviews = [], localReviews = [], communityR
       <div class="ld-tools actions"><button class="button secondary" data-action="import">Import JSON</button><button class="button secondary" data-action="export">Export JSON</button></div></header>
     <div class="ld-selector"><label for="ledger-node">Node</label><select id="ledger-node">${groupOptions(nodes, current.id)}</select>
       <button class="button" data-action="review" data-id="${html(current.id)}">Add review</button>
+      <button class="button secondary" data-action="community-check" data-id="${html(current.id)}">Contribute verification</button>
       ${current.id.startsWith('outline-') ? '' : '<button class="button secondary" data-action="locate" data-id="'+html(current.id)+'">Locate in graph</button>'}</div>
-    <aside class="ld-scope"><b>Coverage</b><span>Percentages describe the reviews recorded here.</span></aside>
+    <aside class="ld-scope"><b>Coverage</b><span>Percentages describe the reviews recorded here.</span>${issuesUrl ? reference(issuesUrl,"Browse submitted reports") : ''}</aside>
+    ${archivedReviews.length ? '<details class="panel ld-records"><summary>Private archive · ' + archivedReviews.length + (archivedReviews.length === 1 ? ' entry' : ' entries') + '</summary><p class="ld-footnote">These saved entries overlap with published reviews. The graph uses the published history. Export JSON includes your originals.</p>' + recordList(archivedReviews, localIds, publicIds, baseIds, byId, submissions, true) + '</details>' : ''}
     <div class="ld-top-grid">
       <section class="panel ld-timeline"><div class="ld-panel-heading"><h3>Evidence over time</h3><span>${history.length} ${history.length === 1 ? 'event' : 'events'}</span></div>
         ${trend(history)}
@@ -229,8 +234,8 @@ export function renderLedger({nodes, reviews = [], localReviews = [], communityR
       ${model.blockers.length ? '<ul class="ld-reasons">' + model.blockers.map(b => '<li>' + html(b.detail) + ' · ' + html(name(byId.get(b.nodeId)) || b.nodeId) + '</li>').join('') + '</ul>' : ''}
     </section>
     <section class="panel ld-records"><div class="ld-panel-heading"><h3>Review log</h3><span>${own.length} direct ${own.length === 1 ? 'record' : 'records'}</span></div>
-      ${recordList(own, localIds, publicIds, baseIds, byId)}
-      ${inherited.length ? '<details class="ld-more"><summary>Prerequisite reviews · ' + inherited.length + '</summary>' + recordList(inherited, localIds, publicIds, baseIds, byId) + '</details>' : ''}
+      ${recordList(own, localIds, publicIds, baseIds, byId, submissions)}
+      ${inherited.length ? '<details class="ld-more"><summary>Prerequisite reviews · ' + inherited.length + '</summary>' + recordList(inherited, localIds, publicIds, baseIds, byId, submissions) + '</details>' : ''}
       ${current.sources?.length ? '<div class="ld-source-links"><b>Sources</b>' + current.sources.map(s => reference(s.url, s.label)).join('') + '</div>' : ''}
     </section>
     <div class="ld-bottom"><details><summary>How support is counted</summary><p>Repeated checks of the same evidence count once. The lower bound counts supporting groups. The upper bound also includes mixed and undecided groups. Challenges to a prerequisite block its dependents.</p></details>

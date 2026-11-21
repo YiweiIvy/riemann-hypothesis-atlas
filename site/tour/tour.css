@@ -99,3 +99,6 @@
     font-size: 12px;
   }
 }
+
+.tour-credit { margin: -6px 0 18px; color: #b7c1da; font-size: 14px; line-height: 1.5; }
+.tour-credit a { color: inherit; text-underline-offset: 3px; }

@@ -4,26 +4,29 @@
 
 ## Short post
 
-You can follow 13 Lean declarations from the Riemann hypothesis statement to a bound on prime sums. I built an atlas to explore that path and 804,912 declarations in Alpöge’s proposed proof. Click a star to see its source.
+Levent Alpöge proposed a proof of the Riemann hypothesis, developed with Claude. I used James Shore’s data to build an atlas of its Lean code. Click any of 804,912 declarations to read its source.
 
-https://yiweiivy.github.io/riemann-hypothesis-atlas/
+Announcement → https://alpo.ge/remark.pdf
+Atlas → https://yiweiivy.github.io/riemann-hypothesis-atlas/
 
 [Attach the short video](https://yiweiivy.github.io/riemann-hypothesis-atlas/share/galaxy-teaser.mp4) · [Download the share card](https://yiweiivy.github.io/riemann-hypothesis-atlas/share/riemann-hypothesis-atlas.png)
 
 **Image description**
 
-A star map of Lean declarations. The Riemann hypothesis sits between clusters labeled Theta lifts, Prime estimates and Abelian varieties. Lines connect declarations to the ones they use.
+A star map of Lean declarations in Levent Alpöge’s proposed proof, developed with Claude. The card credits YiweiIvy for the atlas and James Shore for the data. The RH declaration sits between clusters for theta lifts, prime estimates and abelian varieties.
 
 ## For a Lean or math community
 
 **Title**
 
-Exploring the Lean dependencies in Alpöge’s proposed proof of the Riemann hypothesis
+An atlas of the Lean dependencies in Levent Alpöge’s proposed proof of the Riemann hypothesis
 
 **Post**
 
-I built an interactive atlas for reading the Lean release. It uses James Shore’s dependency data to link 804,912 named declarations to their source lines. A good place to start is “Trace a proof path” on the RH statement. The 13 stops take you from the statement to a prime-sum error bound. Select any stop and you can read the Lean lines or branch into its other dependencies.
+Levent Alpöge published a proposed proof of the Riemann hypothesis and credits Claude with helping develop the argument and formalize it in Lean. His four-page announcement links the original fourteen-part source archive. [Original announcement](https://alpo.ge/remark.pdf#page=1)
 
-I’d like to hear which dependency you’d explain differently, especially on the passage from pointwise estimates to windows. An issue with a declaration name and a source line would help. If you’d like to find the project again, you can star it on GitHub.
+I built the interactive atlas using James Shore’s v0.2 dependency data. It links 804,912 Lean declarations to the corresponding source lines in CocoSgt’s mirror. A good place to start is “Trace a proof path” on the RH statement. The 13 stops take you from the statement to a prime-sum error bound. Select any stop and you can read the Lean lines or branch into its other dependencies.
+
+I’d especially like help checking the passage from pointwise estimates to windows. Pick a star and choose **Contribute verification** to share the source lines or run log and what you found. Once a maintainer accepts your check, the star’s evidence timeline links back to your issue. [Try a worked example](https://github.com/YiweiIvy/riemann-hypothesis-atlas/blob/main/docs/verification.md)
 
 [Open the 13-node path](https://yiweiivy.github.io/riemann-hypothesis-atlas/#map/trail/1/riemannHypothesis) · [Open an issue or star the repository](https://github.com/YiweiIvy/riemann-hypothesis-atlas) · [Dependency data](https://github.com/james-shore/rh-proof-dependencies/releases/tag/v0.2)

@@ -1,8 +1,10 @@
 # Riemann Hypothesis Atlas
 
-**[Open the interactive atlas](https://yiweiivy.github.io/riemann-hypothesis-atlas/)** · [Follow the 13-node path](https://yiweiivy.github.io/riemann-hypothesis-atlas/#map/trail/1/riemannHypothesis) · [Watch the 70-second tour](https://yiweiivy.github.io/riemann-hypothesis-atlas/tour/)
+**[Open the interactive atlas](https://yiweiivy.github.io/riemann-hypothesis-atlas/)** · [Contribute a verification](docs/verification.md) · [Follow the 13-node path](https://yiweiivy.github.io/riemann-hypothesis-atlas/#map/trail/1/riemannHypothesis) · [Watch the 70-second tour](https://yiweiivy.github.io/riemann-hypothesis-atlas/tour/)
 
-Explore the Lean code behind Levent Alpöge’s Riemann hypothesis proof claim. Each star is a declaration. Follow its references to a source line, play a path from RH to a prime-sum bound, or scrub through the published checks.
+**Levent Alpöge announced the proposed proof of the Riemann hypothesis.** He credits Claude with helping develop the argument and formalize it in Lean. Footnote 1 links his original Lean source archive. [Alpöge’s announcement](https://alpo.ge/remark.pdf#page=1)
+
+**YiweiIvy built the interactive atlas** using dependency data published by James Shore. Each star is a Lean declaration. Select one to read its source, follow a path from RH to a prime-sum bound, or replay the published checks. [Shore’s v0.2 dataset](https://github.com/james-shore/rh-proof-dependencies/releases/tag/v0.2)
 
 The full graph covers **804,912 declarations** and **7,917,157 direct reference pairs** across five published targets.
 
@@ -47,7 +49,7 @@ Open `dist/riemann-hypothesis-atlas.html` in a modern browser. Source and log li
 python3 scripts/verify-archives.py /path/to/parts /path/to/cocosgt.tar.gz
 ```
 
-For GitHub Pages, push the source to your repository’s `main` branch, choose **GitHub Actions** under **Settings → Pages**, then manually run **Check atlas and publish Pages on request**. The workflow publishes the modular site and its portable edition. [Pages workflow](.github/workflows/pages.yml)
+For GitHub Pages, choose **GitHub Actions** under **Settings → Pages**. Each push to `main` publishes the site and its portable edition after the checks pass. To publish again, run **Check atlas and publish Pages** from the Actions tab. [Pages workflow](.github/workflows/pages.yml)
 
 ## License
 

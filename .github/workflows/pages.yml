@@ -1,4 +1,4 @@
-name: Check atlas and publish Pages on request
+name: Check atlas and publish Pages
 on:
   push:
     branches: [main]
@@ -8,18 +8,45 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: atlas-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Validate community checks and new issue attributions
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ -z "$BASE_SHA" || "$BASE_SHA" =~ ^0+$ ]]; then
+            node scripts/check-registry.mjs
+          else
+            base_file="$RUNNER_TEMP/registry-base.json"
+            if git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
+              git show "$BASE_SHA:site/data/community-reviews.json" > "$base_file"
+            else
+              gh api -H 'Accept: application/vnd.github.raw+json' \
+                "repos/$GITHUB_REPOSITORY/contents/site/data/community-reviews.json?ref=$BASE_SHA" > "$base_file"
+            fi
+            node scripts/check-registry.mjs "$base_file" --verify-issues
+          fi
       - run: npm test
       - run: npm run build
       - name: Prepare site with an offline edition
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
           mkdir _pages
           cp -R site/. _pages/
@@ -38,12 +65,12 @@ jobs:
               path.write_text(html)
           PYTHON
       - uses: actions/upload-pages-artifact@v4
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         with:
           path: _pages
 
   deploy:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: check
     runs-on: ubuntu-latest
     permissions:

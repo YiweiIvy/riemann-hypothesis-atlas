@@ -2,7 +2,7 @@
   "name": "riemann-hypothesis-atlas",
   "version": "2.0.0",
   "private": true,
-  "description": "Explore the Lean dependency graph of Alpöge’s Riemann hypothesis proof claim and replay its published verification records.",
+  "description": "YiweiIvy’s atlas of Levent Alpöge’s proposed proof, developed with Claude, using Lean dependency data by James Shore.",
   "license": "MIT",
   "type": "module",
   "scripts": {

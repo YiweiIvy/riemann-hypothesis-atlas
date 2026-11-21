@@ -100,7 +100,7 @@ function shell(meta) {
     .join("");
   return `<div class="explorer">
     <div class="page-heading">
-      <div><div class="observation"><span class="spectral-bar"></span>Alpöge archive <span class="sep">/</span> Lean 4.33.1</div><h1>Riemann hypothesis</h1></div>
+      <div><div class="observation"><span class="spectral-bar"></span>Lean 4.33.1</div><h1>Riemann hypothesis</h1><p class="proof-byline">Proposed proof by <a href="https://alpo.ge/remark.pdf#page=1" target="_blank" rel="noopener noreferrer">Levent Alpöge</a>, working with Claude.</p></div>
       <div class="corpus-stats" aria-label="Complete source corpus">${totals}</div>
     </div>
     <section class="console">
@@ -123,7 +123,7 @@ function shell(meta) {
       </div>
       <aside class="inspector" aria-label="Selected node"><div class="inspector-bar"><span>${icon("inspect")} Inspector</span>${tool("focus", "Center selection", "focus")}</div><div id="inspector-body"></div></aside>
     </section>
-    <div class="below-stage"><span id="relation-key"></span><span>Shore v0.2 <i></i> Fixed source snapshot</span></div>
+    <div class="below-stage"><span id="relation-key"></span><span><a href="https://github.com/james-shore/rh-proof-dependencies/releases/tag/v0.2" target="_blank" rel="noopener noreferrer">Graph data by James Shore · v0.2</a></span></div>
   </div>`;
 }
 
@@ -654,7 +654,8 @@ export function mountExplorer(container, options) {
       html +=
         '<button class="record-btn" data-x="review">' +
         icon("plus") +
-        " Record check</button>";
+        ' Record check</button> <button class="record-btn" data-x="contribute-check">' +
+        icon("evidence") + " Contribute verification</button>";
     }
     if (full) {
       const symbols = ["RH", "ζ", "½+", "L", "L*"];
@@ -1189,11 +1190,11 @@ export function mountExplorer(container, options) {
       else if (scene.requestFullscreen) await scene.requestFullscreen();
       else scene.classList.toggle("expanded");
     }
-    if (a === "review" || a === "ledger") {
+    if (a === "review" || a === "contribute-check" || a === "ledger") {
       if (!picked?.reviewId) return;
       if (!isGroup(picked) && lens !== "route") onRecords([picked], []);
-      if (a === "review") await onReview(picked.reviewId);
-      else await onLedger(picked.reviewId);
+      if (a === "ledger") await onLedger(picked.reviewId);
+      else await onReview(picked.reviewId, a === "contribute-check");
     }
   }
   function onClick(e) {
@@ -1254,6 +1255,7 @@ export function mountExplorer(container, options) {
   document.addEventListener("keydown", onKeys);
   bindData(starter, "riemannHypothesis");
   return {
+    currentReviewTarget: () => picked?.reviewId ?? null,
     locate,
     openSearch,
     showEvidence() {

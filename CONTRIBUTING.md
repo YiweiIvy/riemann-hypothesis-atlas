@@ -6,18 +6,39 @@ Choose a node and inspect its pinned source. Record the version, the claim you c
 - **Group.** Use a stable identifier for the evidence, such as a DOI or build ID. Reports based on the same run share a group. For an independent run, describe which inputs and tools it shares with earlier checks.
 - **Outcome.** Choose *Support*, *Challenge* or *Undecided*. A challenge should identify a specific failed step or mismatch.
 
-## Publish through a pull request
+## Submit from the atlas
 
-Export your personal reviews from the ledger. In a fork of the project, run this command.
+Select a declaration in the explorer and choose **Contribute verification**. Fill in your evidence, then choose **Save & preview submission**. **Open GitHub draft** lets you inspect and post the issue under your own account. The draft contains the selected check and its correction history. You can also submit a previously saved check from **Evidence**. [Open the explorer](https://yiweiivy.github.io/riemann-hypothesis-atlas/) · [Try a worked example](docs/verification.md)
+
+An issue opens a discussion. A maintainer checks the evidence and proposes an update to the public ledger in a pull request. After that update reaches `main` and the Pages checks pass, the finding appears on the site. The ledger credits the GitHub issue’s author and links back to the report. Checks that use the same build or artifact should name the same evidence group. [Submitted reports](https://github.com/YiweiIvy/riemann-hypothesis-atlas/issues?q=is%3Aissue+in%3Atitle+Verification)
+
+If a report is too long for a prefilled link, copy the Markdown draft into a [verification issue](https://github.com/YiweiIvy/riemann-hypothesis-atlas/issues/new?template=verification.md). Keep its single fenced JSON block intact. For a correction chain larger than an issue can hold, use the scoped JSON download and submit a PR as described below.
+
+## Accept a report
+
+Review the source, the specific statement, the independence group and the reproducibility of the finding. Inspect or rerun the check before accepting the result. A node-level check can establish a property of that statement or build; the evidence ledger records precisely that scope.
+
+In a clean checkout of the atlas, open a branch for the report. Replace `123` with its issue number. The importer requires Node.js 20+ and the GitHub CLI.
+
+```sh
+git switch -c review/verification-123
+node scripts/accept-verification.mjs 123
+git diff -- site/data/community-reviews.json
+npm test
+```
+
+The command reads the issue from GitHub and validates its snapshot and exact node against the source corpus. It prepares a local change to `site/data/community-reviews.json` and records the originating issue and its author from GitHub. Commit the diff, open a pull request, and reference the submission with `Closes #123`. CI checks an issue-backed addition against the public report and prevents changing previous records or their attribution. A maintainer reviews and merges the PR. On a fork, set `GITHUB_REPOSITORY=OWNER/REPO` when importing issues belonging to that fork.
+
+## Submit a review file by pull request
+
+Export the selected record and its history. In a fork, merge that file into the registry, inspect the result and open a PR with the public source and reproduction steps.
 
 ```sh
 node scripts/merge-reviews.mjs path/to/reviews.json
-node --test tests/trust.test.mjs
+npm test
 ```
 
-Submit the change to `site/data/community-reviews.json`. Include the node, source and method in the PR. The maintainer can check the claim, check how the evidence was grouped and reproduce the result. Local entries become public through an accepted PR.
-
-The merge checks the snapshot, node IDs, chronology and record schema. Reimporting identical IDs is idempotent. Conflicting records fail the entire merge and leave the registry intact.
+The merge checks the snapshot, node IDs, chronology and record schema. Reimporting identical IDs is idempotent. Conflicting IDs reject the entire update. Direct PRs retain their submission history in Git.
 
 ## Amend or withdraw
 

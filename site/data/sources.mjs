@@ -18,7 +18,7 @@ export const SOURCES = [
     title: "Remark on the Riemann hypothesis",
     url: "https://alpo.ge/remark.pdf",
     detail:
-      "The archive links are on page 1. Footnote 2 on page 2 describes a text exceeding 250,000 pages. The author released the Lean source.",
+      "Alpöge credits Claude with helping develop and formalize the proposed proof. Footnote 1 links his original Lean archive. Footnote 2 on page 2 describes the manuscript of more than 250,000 pages.",
   },
   {
     id: "archive",

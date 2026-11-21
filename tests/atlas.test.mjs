@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { NODES, AUTHOR_ROUTE } from "../site/data/atlas.mjs";
+import { NODES } from "../site/data/atlas.mjs";
+import { knownNodeIds } from "../scripts/merge-reviews.mjs";
 import { BASELINE } from "../site/data/baseline.mjs";
 import { importReviews, mergeReviews } from "../site/trust.mjs";
 import {
@@ -70,15 +71,9 @@ test("the default galaxy and its guided paths preserve direct Lean references", 
   assert.ok(route.nodes.every((n) => ids.has(n.topic.leanId)));
 });
 test("all baseline and community evidence refers to known snapshot nodes", async () => {
-  const known = new Set(
-    [...NODES, ...AUTHOR_ROUTE]
-      .map((n) => n.id)
-      .concat(index.nodes.map((n) => "lean:" + n.id)),
-  );
-  const publicRecords = importReviews(
-    await json("community-reviews"),
-    undefined,
-    known,
+  const publicRecords = importReviews(await json("community-reviews"));
+  const known = await knownNodeIds(
+    publicRecords.map((record) => record.nodeId),
   );
   for (const review of mergeReviews(BASELINE, publicRecords))
     assert.ok(known.has(review.nodeId));
